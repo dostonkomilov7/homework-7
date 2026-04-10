@@ -6,7 +6,7 @@ import likesController from "../controllers/likes.controller.js";
 const likesRouter = Router();
 
 likesRouter
-    .post("/posts/:id/like", validationMiddleware(createLikeSchema), likesController.createLike)
-    .delete("/posts/:id/like", likesController.deleteLike)
+    .post("/:id/like", validationMiddleware(createLikeSchema), likesController.createLike)
+    .delete("/:id/like", likesController.deleteLike)
 
 export default likesRouter;

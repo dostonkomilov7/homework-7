@@ -5,6 +5,8 @@ import jwtConfig from "../configs/jwt.config.js";
 import { NotFoundException } from "../exceptions/not-found.exception.js";
 import { BadRequestException } from "../exceptions/bad-request.exception.js";
 import { ConflictRequestException } from "../exceptions/conflict-request.exception.js";
+import signature from "../configs/signed.js";
+import { sendEmail } from "../helpers/mail.helper.js";
 
 class AuthController {
     #_userModel;
@@ -117,6 +119,50 @@ class AuthController {
         }
 
         console.log("ADMIN SEEDED ✅")
+    }
+
+    forgotPassword = async (req, res, next) => {
+        try {
+            const BASE_URL = process.env.BASE_URL;
+            const {email} = req.body;
+
+            const foundedUser = await this.#_userModel.findOne({email: email});
+
+            if(!foundedUser){
+                throw new NotFoundException("User's is not found")
+            }
+
+            const signedUrl = signature.sign(
+                `${BASE_URL}/auth/reset-password?userId=${foundedUser.id}`,
+                {ttl: 300},
+            );
+
+            sendEmail(email, "Signed URL", signedUrl);
+            res.status(200).send({
+                signedUrl
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    resetPassword = async (req, res, next) => {
+        try {
+            const {userId} = req.query;
+            const {password} = req.body;
+
+            const hashedPass = await this.#hashPassword(password);
+
+            await this.#_userModel.updateOne(
+                {_id: userId},
+                {password: hashedPass}
+            );
+
+            res.status(204).send();
+        } catch (error) {
+            console.log(error);
+            next(error);
+        }
     }
 
     #hashPassword = async (pass) => {

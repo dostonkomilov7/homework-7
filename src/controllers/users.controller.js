@@ -1,3 +1,4 @@
+import { sendEmail } from "../helpers/mail.helper.js";
 import { User } from "../models/users.model.js";
 
 class UserController {
@@ -13,6 +14,8 @@ class UserController {
             success: true,
             users
         });
+
+        sendEmail("bakhtiyorovv9@gmail.com", "New post", "Hiiii Faxriddin");
     }
 
     getSingleUser = async (req, res) => {

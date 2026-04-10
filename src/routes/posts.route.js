@@ -10,18 +10,18 @@ import { Role } from "../middlewares/roles.middleware.js";
 const postRouter = Router();
 
 postRouter
-    .get("/posts", Protected(true), postsController.getAllPosts)
-    .get("/posts/:id", Protected(true), postsController.getSinglePost)
-    .post("/posts", Protected(true), Role("USER", "ADMIN"), upload.fields([
+    .get("/", Protected(true), postsController.getAllPosts)
+    .get("/:id", Protected(true), postsController.getSinglePost)
+    .post("/", Protected(true), Role("USER", "ADMIN"), upload.fields([
         {name: "image", maxCount: 1},
         {name: "video", maxCount: 1},
         ]),
         postsController.createPost
     )
-    .patch("/posts/:id", Protected(true), Role("USER", "ADMIN"), upload.fields([
+    .patch("/:id", Protected(true), Role("USER", "ADMIN"), upload.fields([
       { name: "image", maxCount: 1 },
       { name: "video", maxCount: 1 },
     ]), postsController.updatePost)
-    .delete("/posts/:id", postsController.deletePost)
+    .delete("/:id", postsController.deletePost)
 
 export default postRouter;

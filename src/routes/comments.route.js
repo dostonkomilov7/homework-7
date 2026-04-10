@@ -6,8 +6,8 @@ import { createCommentSchema } from "../schemas/comments/create-comment.schema.j
 const commentRouter = Router();
 
 commentRouter
-    .get("/comments", commentsController.getAllComment)
-    .post("/comments", validationMiddleware(createCommentSchema), commentsController.createComment)
-    .delete("/comments/:id", commentsController.deleteComment)
+    .get("/", commentsController.getAllComment)
+    .post("/", validationMiddleware(createCommentSchema), commentsController.createComment)
+    .delete("/:id", commentsController.deleteComment)
 
 export default commentRouter;

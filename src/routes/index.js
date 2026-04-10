@@ -5,8 +5,13 @@ import commentRouter from "./comments.route.js";
 import likesRouter from "./likes.route.js";
 import authRouter from "./auth.route.js";
 
-const apiRouter = Router()
+const apiRouter = Router();
 
-apiRouter.use(authRouter, userRouter, postRouter, commentRouter, likesRouter);
+apiRouter
+    .use("/auth", authRouter)
+    .use("/users", userRouter)
+    .use("/posts", postRouter)
+    .use("/comments", commentRouter)
+    .use("/posts", likesRouter)
 
-export default apiRouter
+export default apiRouter;

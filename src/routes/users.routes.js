@@ -6,11 +6,11 @@ import { upload } from "../configs/multer.config.js";
 const userRouter = Router();
 
 userRouter
-    .get("/users", Protected(true), usersController.getAllUsers)
+    .get("/", Protected(true), usersController.getAllUsers)
     .get("/viewers", usersController.getAllUsers)
-    .get("/users/:id", Protected(true), usersController.getSingleUser)
-    .delete("/users/:id", Protected(true), usersController.deleteUser)
-    .post("/users/upload-photo/:id", Protected(true),
+    .get("/:id", Protected(true), usersController.getSingleUser)
+    .delete("/:id", Protected(true), usersController.deleteUser)
+    .post("/upload-photo/:id", Protected(true),
         upload.fields([
             {name: "image", maxCount: 1},
         ]), usersController.upload)
