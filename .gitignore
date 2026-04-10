@@ -140,3 +140,5 @@ dist
 ./uploads
 
 .gitignore
+
+.DS_Store
